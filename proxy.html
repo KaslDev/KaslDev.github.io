@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Proxy Bypasser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>URL Proxy Bypasser</h2>
+        <input type="text" id="urlInput" placeholder="Enter blocked URL (e.g., https://example.com)">
+        <br>
+        <button onclick="bypassURL()">Go</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function bypassURL() {
+            const urlInput = document.getElementById('urlInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            // Basic URL validation
+            if (!urlInput) {
+                resultDiv.textContent = "Please enter a URL!";
+                return;
+            }
+
+            // Ensure the URL has a protocol
+            let cleanUrl = urlInput;
+            if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+                cleanUrl = 'https://' + cleanUrl;
+            }
+
+            try {
+                // Using hide.me proxy service as an example
+                // It appends the target URL to their proxy endpoint
+                const proxyService = 'https://hide.me/en/proxy';
+                const encodedUrl = encodeURIComponent(cleanUrl); // URL encode the input
+                
+                // Construct the proxy URL
+                const bypassUrl = `${proxyService}?url=${encodedUrl}`;
+                
+                // Open in a new tab (more user-friendly than direct redirect)
+                window.open(bypassUrl, '_blank');
+                
+                resultDiv.textContent = "Opening in proxy... Check your new tab!";
+            } catch (error) {
+                resultDiv.textContent = "Error: Could not process the URL!";
+                console.error(error);
+            }
+        }
+
+        // Allow Enter key to trigger bypass
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                bypassURL();
+            }
+        });
+    </script>
+</body>
+</html>
